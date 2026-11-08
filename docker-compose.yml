@@ -1,0 +1,21 @@
+services:
+  jeopardy:
+    build: .
+    image: trivia-board:latest
+    container_name: trivia-board
+    restart: unless-stopped
+    ports:
+      # Host 3737 → container 3737. Change the left number to move the host port.
+      - "3737:3737"
+    volumes:
+      # Your games live here. Survives `docker-compose down`; removed only by
+      # `docker-compose down -v`.
+      - jeopardy-data:/data
+    environment:
+      DATABASE_URL: "file:/data/jeopardy.db"
+      # Set to "false" to start with an empty library instead of the bundled
+      # sample game.
+      SEED_ON_EMPTY: "true"
+
+volumes:
+  jeopardy-data:

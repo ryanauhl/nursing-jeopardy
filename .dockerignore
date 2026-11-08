@@ -1,0 +1,20 @@
+node_modules
+.next
+.git
+.gitignore
+
+# The local database must never leak into an image — the container gets its own
+# on a volume.
+prisma/*.db
+prisma/*.db-journal
+src/generated
+
+.env*
+npm-debug.log*
+README.md
+.claude
+.agents
+.windsurf
+.vscode
+.idea
+.DS_Store

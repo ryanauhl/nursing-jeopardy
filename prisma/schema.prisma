@@ -1,0 +1,47 @@
+// Game content lives on the server so any machine on the
+// LAN sees the same question library. Live scores stay in the browser.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Game {
+  id            String     @id @default(cuid())
+  title         String
+  finalCategory String     @default("")
+  finalClue     String     @default("")
+  finalAnswer   String     @default("")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  categories    Category[]
+}
+
+model Category {
+  id       String @id @default(cuid())
+  gameId   String
+  game     Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  name     String @default("")
+  round    Int // 1 = Jeopardy, 2 = Double Jeopardy
+  position Int // 0-4, left to right
+  clues    Clue[]
+
+  @@index([gameId])
+}
+
+model Clue {
+  id            String   @id @default(cuid())
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  position      Int // 0-4, top to bottom
+  value         Int // round 1: 200..1000 · round 2: 400..2000
+  clue          String   @default("") // what players see
+  answer        String   @default("") // the correct response
+  isDailyDouble Boolean  @default(false)
+
+  @@index([categoryId])
+}

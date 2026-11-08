@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/*
+  Authentic Jeopardy palette. The board blue and the warm value gold are the
+  two colours the whole app hangs on — everything else is scaffolding around
+  them so the board reads correctly from across a room.
+*/
+:root {
+  --board-blue: #060ce9;
+  --board-blue-deep: #030873;
+  --board-blue-lit: #1a2ef5;
+  --value-gold: #d69f4c;
+  --value-gold-bright: #ffcc00;
+  --ink: #04061f;
+  --ink-soft: #0b1038;
+  --panel: #11173f;
+  --panel-line: #2a3270;
+  --paper: #eef1ff;
+  --muted: #8e97cf;
+  --correct: #3ddc84;
+  --wrong: #ff5c5c;
+}
+
+@theme inline {
+  --color-board: var(--board-blue);
+  --color-board-deep: var(--board-blue-deep);
+  --color-board-lit: var(--board-blue-lit);
+  --color-gold: var(--value-gold);
+  --color-gold-bright: var(--value-gold-bright);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-panel: var(--panel);
+  --color-panel-line: var(--panel-line);
+  --color-paper: var(--paper);
+  --color-muted: var(--muted);
+  --color-correct: var(--correct);
+  --color-wrong: var(--wrong);
+  --font-display: var(--font-display);
+  --font-board: var(--font-board);
+}
+
+html,
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-board), "Oswald", sans-serif;
+}
+
+/* Studio atmosphere — a pool of light behind the board, never a flat fill. */
+body {
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% -10%, #131a4d 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(26, 46, 245, 0.18) 0%, transparent 70%);
+  background-attachment: fixed;
+}
+
+/*
+  The show's lettering has a hard, offset black shadow — no blur. It's the
+  single most recognisable detail of the board.
+*/
+.tv-shadow {
+  text-shadow: 0.06em 0.06em 0 rgba(0, 0, 0, 0.85);
+}
+
+.tv-shadow-lg {
+  text-shadow: 0.05em 0.05em 0 rgba(0, 0, 0, 0.9);
+}
+
+.display {
+  font-family: var(--font-display), "Anton", sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* Board tiles sit in a black grid, like separate lit panels. */
+.tile-face {
+  background: linear-gradient(180deg, var(--board-blue-lit) 0%, var(--board-blue) 42%, var(--board-blue-deep) 100%);
+}
+
+.clue-scrim {
+  background: linear-gradient(180deg, var(--board-blue) 0%, var(--board-blue-deep) 100%);
+}
+
+@keyframes tile-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-tile-pop {
+  animation: tile-pop 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes clue-rise {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-clue-rise {
+  animation: clue-rise 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes dd-slam {
+  0% {
+    opacity: 0;
+    transform: scale(2.2) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.94) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-dd-slam {
+  animation: dd-slam 0.45s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+@keyframes pulse-red {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.animate-pulse-red {
+  animation: pulse-red 0.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-tile-pop,
+  .animate-clue-rise,
+  .animate-dd-slam,
+  .animate-pulse-red {
+    animation: none;
+  }
+}
+
+/* Keep number inputs clean — the host is typing wagers under time pressure. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
